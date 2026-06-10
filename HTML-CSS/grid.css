@@ -21,7 +21,6 @@ header{
 aside{
     background-color:rgb(24, 183, 175);
 }
-
 .grid{
     display: grid;
     grid-template-columns:repeat(4, 1fr);

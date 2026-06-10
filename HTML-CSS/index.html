@@ -3,53 +3,171 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Madhan</title>
+    <meta name="description" content="Portfolio of Ramesh Poojitha, a B.Tech AI&DS student.">
+    <title>Ramesh Poojitha | Portfolio</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <h1>Self-Intro</h1>
-    <hr>
-    <h2>poojitha</h2>
-    <p>I am <b> poojitha </b>,I am doing <u> B.tech </u> 3 <sup> rd </sup>year in the field of <i> CSE </i> in Mother Theresa Engineering College-Melomoi.
-       <br> I have participated in <big> <i> Hackathon </i></big>which is an Intra College <small> Competition. </small> </p>
-    <p>Programming Languages:
-        <br>
-        <ol>
-        <li> C</li><li>Java</li><li>Python</li>
-    </ol></p>
-    <p>
-        <table>
-            <tr>
-                <th>5 <sup>th</sup> Semester </th>
-                <th>Marks</th>
-                <th>Grade</th>
-            </tr>
-            <tr>
-                <td>DBMS</td>
-                <td>89</td>
-                <td><b>A</b></td>
-            </tr>
-            <tr>
-                <td>SE</td>
-                <td>99</td>
-                <td><b>S</b></td>
-            </tr>
-            <tr>
-                <td>OS</td>
-                <td>80</td>
-                <td><b>B</b></td>
-            </tr>
-            <tr>
-                <td>CN</td>
-                <td>76</td>
-                <td><b>B</b></td>
-            </tr>
-            <tr>
-                <td>DS</td>
-                <td>78</td>
-                <td><b>B</b></td>
-            </tr>
-        </table>
-    </p>
-    <a href="/form.html" target="main">Form</a>
+    <div class="page-shell">
+        <header class="topbar">
+            <a class="brand" href="#home">RP</a>
+            <button class="menu-toggle" type="button" aria-expanded="false" aria-controls="site-nav">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+            <nav id="site-nav" class="nav-links">
+                <a href="#about">About</a>
+                <a href="#skills">Skills</a>
+                <a href="#education">Education</a>
+                <a href="#hobbies">Hobbies</a>
+                <a href="#more-info">More Info</a>
+                <a href="#contact">Contact</a>
+            </nav>
+        </header>
+
+        <main id="home">
+            <section class="hero card">
+                <div class="hero-copy">
+                    <p class="eyebrow">AI&DS Portfolio</p>
+                    <h1>Ramesh Poojitha</h1>
+                    <p class="lead">
+                        B.Tech student in Artificial Intelligence and Data Science at Mother Teresa Institute of Engineering.
+                        I am in my 3rd year and I build clean, responsive web experiences while learning how to turn ideas into working products.
+                    </p>
+                    <div class="hero-actions">
+                        <a class="button primary" href="#contact">Contact Me</a>
+                        <a class="button secondary" href="#skills">View Skills</a>
+                    </div>
+                </div>
+
+                <aside class="profile-panel">
+                    <div class="avatar">RP</div>
+                    <div class="quick-facts">
+                        <div>
+                            <span>Name</span>
+                            <strong>Ramesh Poojitha</strong>
+                        </div>
+                        <div>
+                            <span>Degree</span>
+                            <strong>B.Tech</strong>
+                        </div>
+                        <div>
+                            <span>Department</span>
+                            <strong>AI&DS</strong>
+                        </div>
+                        <div>
+                            <span>Year</span>
+                            <strong>3rd Year</strong>
+                        </div>
+                        <div>
+                            <span>College</span>
+                            <strong>Mother Teresa Institute of Engineering</strong>
+                        </div>
+                        <div>
+                            <span>Location</span>
+                            <strong>India</strong>
+                        </div>
+                    </div>
+                </aside>
+            </section>
+
+            <section id="about" class="card section-block reveal">
+                <h2>About Me</h2>
+                <p>
+                    I am a student in AI&DS focused on building user-friendly, practical, and modern web interfaces.
+                    I like learning by doing, improving design details, and writing code that is easy to understand.
+                </p>
+            </section>
+
+            <section id="skills" class="card section-block reveal">
+                <h2>Skills</h2>
+                <div class="skill-grid">
+                    <span>HTML</span>
+                    <span>CSS</span>
+                    <span>JavaScript</span>
+                    <span>Responsive Design</span>
+                    <span>Problem Solving</span>
+                    <span>Teamwork</span>
+                </div>
+            </section>
+
+            <section id="education" class="card section-block reveal">
+                <h2>Education</h2>
+                <div class="timeline">
+                    <article>
+                        <span class="timeline-year">Present</span>
+                        <h3>B.Tech in AI &amp; DS</h3>
+                        <p>Mother Teresa Institute of Engineering</p>
+                    </article>
+                    <article>
+                        <span class="timeline-year">Year</span>
+                        <h3>3rd Year Student</h3>
+                        <p>Focused on learning, projects, and improving technical skills.</p>
+                    </article>
+                    <article>
+                        <span class="timeline-year">Focus</span>
+                        <h3>Web Development</h3>
+                        <p>Creating responsive layouts, interactive pages, and simple user experiences.</p>
+                    </article>
+                </div>
+            </section>
+
+            <section id="hobbies" class="card section-block reveal">
+                <h2>Hobbies</h2>
+                <div class="skill-grid">
+                    <span>Coding</span>
+                    <span>Listening to Music</span>
+                    <span>Reading Tech Content</span>
+                    <span>Exploring Web Design</span>
+                    <span>Learning New Tools</span>
+                </div>
+            </section>
+
+            <section id="more-info" class="card section-block reveal">
+                <h2>More Information</h2>
+                <div class="info-grid">
+                    <article>
+                        <span>Current Focus</span>
+                        <h3>AI, Data Science, and Web Development</h3>
+                        <p>Learning how to build useful applications with modern front-end design and strong problem-solving skills.</p>
+                    </article>
+                    <article>
+                        <span>Strengths</span>
+                        <h3>Consistency and Curiosity</h3>
+                        <p>I like improving step by step, exploring new ideas, and creating work that looks clean and professional.</p>
+                    </article>
+                    <article>
+                        <span>Location</span>
+                        <h3>Available in India</h3>
+                        <p>Open to learning opportunities, internships, and projects that help me grow as a software professional.</p>
+                    </article>
+                </div>
+            </section>
+
+            <section id="contact" class="card section-block reveal contact-block">
+                <h2>Contact</h2>
+                <div class="contact-grid">
+                    <div>
+                        <span>Phone</span>
+                        <a href="tel:7569661473">7569661473</a>
+                    </div>
+                    <div>
+                        <span>Email</span>
+                        <a href="mailto:poojitha2006312gmail.com">poojitha2006312gmail.com</a>
+                    </div>
+                    <div>
+                        <span>Location</span>
+                        <strong>India</strong>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <script src="script.js"></script>
 </body>
 </html>
