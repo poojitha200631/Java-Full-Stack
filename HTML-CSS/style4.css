@@ -1,0 +1,33 @@
+
+img{
+    animation:picture 10s ease-in-out 2s infinite;
+}
+@keyframes picture{
+    0%{
+        transform:translate(0cm,0cm);
+        rotate:rotate(0deg);
+        border-style:groove;
+        brorder-width:1cm;
+    }
+    25%{
+        transform:translate(10cm,0cm);
+        transform:rotate(90deg);
+        border-style:dashed;
+        border-width:1cm;
+    }
+    50%{
+        transform:translate(10cm,10cm);
+        transform:rotate(90deg);
+        border-style:solid;
+        border-width:1cm;
+    }
+    75%{
+        transform:translate(10cm, 10cm);
+        transform:rotate(180deg);
+        border-style:double;
+        border-width:1cm;
+    }
+    100%{
+        transform:translate(0cm,0cm);
+    }
+}
