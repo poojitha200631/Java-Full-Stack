@@ -5,11 +5,11 @@
 /*h1{
     height:10cm;
     background:linear-gradient(32deg, pink, green,yellow,orange,purple,red);
-}*/
+}
 body{
     display: flex;
     flex-direction: column;
     flex-wrap:wrap;
     gap:1cm;
     flex-grow:1;
-}
+}*/

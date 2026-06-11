@@ -106,8 +106,33 @@ function cook()
 cook();
 for(let i=1;i<=5;i++){
     cook();
-}*/
+}
 function dishwash(vessels){
     console.log("we have to wash"+vessels+"vessels");
 }
 dishwash(2);
+function num(n)
+{
+    if(n>10){
+        return;
+    }
+    console.log(n);
+    n+=1;
+    num(n);
+}
+num(1);*/
+function guess(n) {
+    let userGuess = Number(prompt("Enter a number:"));
+
+    if (userGuess == n) {
+        console.log("Congratulations! You guessed the number.");
+    } else if (userGuess < n) {
+        console.log("Too low! Try again.");
+        guess(n);
+    } else {
+        console.log("Too high! Try again.");
+        guess(n);
+    }
+}
+let number = Math.floor(Math.random() * 100) + 1;
+guess(number);
