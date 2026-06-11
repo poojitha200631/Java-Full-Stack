@@ -123,7 +123,6 @@ function num(n)
 num(1);*/
 function guess(n) {
     let userGuess = Number(prompt("Enter a number:"));
-
     if (userGuess == n) {
         console.log("Congratulations! You guessed the number.");
     } else if (userGuess < n) {
