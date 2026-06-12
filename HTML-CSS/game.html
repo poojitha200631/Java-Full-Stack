@@ -1,0 +1,792 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Talking Tom Style Game</title>
+	<style>
+		:root {
+			color-scheme: dark;
+			--bg1: #08111f;
+			--bg2: #172033;
+			--card: rgba(10, 18, 33, 0.86);
+			--card-2: rgba(255, 255, 255, 0.06);
+			--text: #f8fafc;
+			--muted: #cbd5e1;
+			--accent: #fbbf24;
+			--accent-2: #22d3ee;
+			--good: #4ade80;
+			--warn: #fb7185;
+		}
+
+		* {
+			box-sizing: border-box;
+		}
+
+		body {
+			margin: 0;
+			min-height: 100vh;
+			display: grid;
+			place-items: center;
+			padding: 20px;
+			font-family: "Trebuchet MS", "Segoe UI", sans-serif;
+			color: var(--text);
+			background:
+				radial-gradient(circle at top, rgba(34, 211, 238, 0.15), transparent 28%),
+				radial-gradient(circle at bottom right, rgba(251, 191, 36, 0.14), transparent 24%),
+				linear-gradient(135deg, var(--bg1), var(--bg2));
+		}
+
+		.app {
+			width: min(100%, 920px);
+			border-radius: 32px;
+			padding: 26px;
+			background: var(--card);
+			border: 1px solid rgba(255, 255, 255, 0.08);
+			box-shadow: 0 28px 70px rgba(0, 0, 0, 0.45);
+			backdrop-filter: blur(12px);
+			position: relative;
+			overflow: hidden;
+		}
+
+		.app::before,
+		.app::after {
+			content: "";
+			position: absolute;
+			border-radius: 999px;
+			pointer-events: none;
+		}
+
+		.app::before {
+			width: 220px;
+			height: 220px;
+			right: -70px;
+			top: -80px;
+			background: rgba(34, 211, 238, 0.12);
+			filter: blur(18px);
+			animation: floaty 9s ease-in-out infinite;
+		}
+
+		.app::after {
+			width: 180px;
+			height: 180px;
+			left: -60px;
+			bottom: -60px;
+			background: rgba(251, 191, 36, 0.12);
+			filter: blur(18px);
+			animation: floaty 11s ease-in-out infinite reverse;
+		}
+
+		.topbar {
+			display: flex;
+			justify-content: space-between;
+			gap: 14px;
+			align-items: center;
+			flex-wrap: wrap;
+			margin-bottom: 16px;
+		}
+
+		.badge {
+			display: inline-flex;
+			align-items: center;
+			gap: 8px;
+			padding: 8px 14px;
+			border-radius: 999px;
+			background: rgba(255, 255, 255, 0.07);
+			color: var(--muted);
+			text-transform: uppercase;
+			letter-spacing: 0.06em;
+			font-size: 0.84rem;
+		}
+
+		.stats {
+			display: flex;
+			gap: 10px;
+			flex-wrap: wrap;
+		}
+
+		.stat {
+			min-width: 90px;
+			padding: 10px 12px;
+			border-radius: 16px;
+			background: rgba(255, 255, 255, 0.06);
+			border: 1px solid rgba(255, 255, 255, 0.06);
+			text-align: center;
+		}
+
+		.stat span {
+			display: block;
+			color: var(--muted);
+			font-size: 0.78rem;
+			text-transform: uppercase;
+			letter-spacing: 0.05em;
+			margin-bottom: 4px;
+		}
+
+		.stat strong {
+			font-size: 1.2rem;
+		}
+
+		h1 {
+			margin: 8px 0 8px;
+			font-size: clamp(2.2rem, 5vw, 4.2rem);
+			line-height: 1;
+		}
+
+		h1 span {
+			color: var(--accent);
+		}
+
+		.intro {
+			margin: 0 0 18px;
+			max-width: 68ch;
+			color: var(--muted);
+			line-height: 1.6;
+		}
+
+		.layout {
+			display: grid;
+			grid-template-columns: 1.05fr 0.95fr;
+			gap: 18px;
+		}
+
+		.stage,
+		.panel {
+			border-radius: 28px;
+			background: var(--card-2);
+			border: 1px solid rgba(255, 255, 255, 0.08);
+		}
+
+		.stage {
+			padding: 22px;
+			display: grid;
+			place-items: center;
+			min-height: 520px;
+			position: relative;
+		}
+
+		.bubble {
+			position: absolute;
+			top: 18px;
+			left: 18px;
+			right: 18px;
+			min-height: 88px;
+			padding: 16px 18px;
+			border-radius: 20px;
+			background: rgba(8, 17, 31, 0.8);
+			border: 1px solid rgba(255, 255, 255, 0.08);
+			color: #e2e8f0;
+			line-height: 1.5;
+			box-shadow: 0 16px 32px rgba(0, 0, 0, 0.2);
+		}
+
+		.bubble strong {
+			color: var(--accent);
+		}
+
+		.pet-wrap {
+			margin-top: 80px;
+			display: grid;
+			place-items: center;
+			gap: 18px;
+		}
+
+		.pet {
+			width: min(56vw, 320px);
+			aspect-ratio: 1;
+			border-radius: 50%;
+			background:
+				radial-gradient(circle at 50% 42%, #ffd8a8 0 17%, transparent 17.5%),
+				radial-gradient(circle at 42% 38%, #111827 0 2.7%, transparent 3%),
+				radial-gradient(circle at 58% 38%, #111827 0 2.7%, transparent 3%),
+				radial-gradient(circle at 50% 52%, #0f172a 0 2.5%, transparent 2.7%),
+				radial-gradient(circle at 50% 60%, #ff9f68 0 7%, transparent 7.2%),
+				linear-gradient(180deg, #ffcb9a, #f6b57e);
+			box-shadow:
+				inset 0 -18px 36px rgba(0, 0, 0, 0.12),
+				0 24px 40px rgba(0, 0, 0, 0.24);
+			position: relative;
+			animation: bob 2.8s ease-in-out infinite;
+			cursor: pointer;
+		}
+
+		.ear {
+			position: absolute;
+			width: 26%;
+			height: 26%;
+			top: 3%;
+			background: linear-gradient(180deg, #ffcb9a, #f3a96c);
+			clip-path: polygon(50% 0, 0 100%, 100% 100%);
+			filter: drop-shadow(0 8px 10px rgba(0, 0, 0, 0.15));
+		}
+
+		.ear.left { left: 4%; transform: rotate(-18deg); }
+		.ear.right { right: 4%; transform: rotate(18deg); }
+
+		.eye {
+			position: absolute;
+			width: 22px;
+			height: 22px;
+			border-radius: 50%;
+			background: #111827;
+			top: 38%;
+			animation: blink 5s infinite;
+		}
+
+		.eye::after {
+			content: "";
+			position: absolute;
+			inset: 5px;
+			border-radius: 50%;
+			background: #ffffff;
+			opacity: 0.6;
+		}
+
+		.eye.left { left: 36%; }
+		.eye.right { right: 36%; }
+
+		.nose {
+			position: absolute;
+			left: 50%;
+			top: 53%;
+			width: 20px;
+			height: 14px;
+			background: #ff7f66;
+			border-radius: 50% 50% 60% 60%;
+			transform: translateX(-50%);
+		}
+
+		.mouth {
+			position: absolute;
+			left: 50%;
+			top: 60%;
+			width: 86px;
+			height: 42px;
+			transform: translateX(-50%);
+			border-bottom: 6px solid #3f2c20;
+			border-radius: 0 0 50% 50%;
+		}
+
+		.paw {
+			position: absolute;
+			bottom: 10px;
+			width: 64px;
+			height: 56px;
+			border-radius: 50% 50% 38% 38%;
+			background: linear-gradient(180deg, #ffd1a8, #f2ad74);
+			box-shadow: inset 0 -8px 14px rgba(0, 0, 0, 0.08);
+		}
+
+		.paw.left { left: 16%; transform: rotate(12deg); }
+		.paw.right { right: 16%; transform: rotate(-12deg); }
+
+		.tail {
+			position: absolute;
+			right: -26px;
+			top: 52%;
+			width: 110px;
+			height: 26px;
+			border-radius: 999px;
+			background: linear-gradient(90deg, #f2ad74, #ffcb9a);
+			transform-origin: left center;
+			transform: rotate(25deg);
+			animation: wag 1.5s ease-in-out infinite;
+		}
+
+		.pet.talk .mouth {
+			animation: talk 0.18s infinite alternate;
+		}
+
+		.pet.happy {
+			animation: bob 1.5s ease-in-out infinite, glow 1s ease-in-out infinite;
+		}
+
+		.pet.sad {
+			filter: saturate(0.8) brightness(0.95);
+		}
+
+		.panel {
+			padding: 20px;
+		}
+
+		.panel h2 {
+			margin: 0 0 12px;
+			font-size: 1.4rem;
+		}
+
+		.field {
+			display: grid;
+			gap: 8px;
+			margin-bottom: 14px;
+		}
+
+		.field label {
+			color: var(--muted);
+			font-size: 0.92rem;
+		}
+
+		.field input {
+			width: 100%;
+			border: 1px solid rgba(255, 255, 255, 0.12);
+			border-radius: 16px;
+			padding: 14px 14px;
+			background: rgba(8, 17, 31, 0.8);
+			color: var(--text);
+			font: inherit;
+		}
+
+		.field input:focus {
+			outline: 2px solid rgba(34, 211, 238, 0.65);
+			outline-offset: 2px;
+		}
+
+		.buttons {
+			display: grid;
+			grid-template-columns: repeat(2, minmax(0, 1fr));
+			gap: 10px;
+			margin-top: 10px;
+		}
+
+		button {
+			border: none;
+			border-radius: 16px;
+			padding: 13px 14px;
+			font: inherit;
+			font-weight: 800;
+			cursor: pointer;
+			transition: transform 0.16s ease, box-shadow 0.16s ease, opacity 0.16s ease;
+		}
+
+		button:hover {
+			transform: translateY(-2px);
+			box-shadow: 0 12px 20px rgba(0, 0, 0, 0.2);
+		}
+
+		button:active {
+			transform: translateY(0);
+			opacity: 0.92;
+		}
+
+		.primary {
+			background: linear-gradient(135deg, #fbbf24, #fde68a);
+			color: #111827;
+		}
+
+		.secondary {
+			background: rgba(255, 255, 255, 0.08);
+			color: var(--text);
+			border: 1px solid rgba(255, 255, 255, 0.08);
+		}
+
+		.actions {
+			display: flex;
+			gap: 10px;
+			flex-wrap: wrap;
+			margin-top: 10px;
+		}
+
+		.meter {
+			margin-top: 14px;
+			display: grid;
+			gap: 10px;
+		}
+
+		.bar {
+			height: 14px;
+			border-radius: 999px;
+			overflow: hidden;
+			background: rgba(255, 255, 255, 0.08);
+		}
+
+		.fill {
+			width: 50%;
+			height: 100%;
+			border-radius: inherit;
+			transition: width 0.3s ease;
+		}
+
+		.hunger { background: linear-gradient(90deg, #22d3ee, #60a5fa); }
+		.happiness { background: linear-gradient(90deg, #4ade80, #22c55e); }
+		.energy { background: linear-gradient(90deg, #fbbf24, #fb7185); }
+
+		.log {
+			margin-top: 14px;
+			min-height: 66px;
+			padding: 14px 16px;
+			border-radius: 16px;
+			background: rgba(8, 17, 31, 0.75);
+			border-left: 4px solid var(--accent-2);
+			color: #e2e8f0;
+			line-height: 1.55;
+		}
+
+		.sparkle {
+			position: absolute;
+			width: 10px;
+			height: 10px;
+			border-radius: 50%;
+			background: #fbbf24;
+			box-shadow: 0 0 18px 8px rgba(251, 191, 36, 0.5);
+			animation: sparkle 1.2s ease-in-out infinite;
+			pointer-events: none;
+		}
+
+		.hidden {
+			display: none;
+		}
+
+		@keyframes bob {
+			0%, 100% { transform: translateY(0); }
+			50% { transform: translateY(-8px); }
+		}
+
+		@keyframes wag {
+			0%, 100% { transform: rotate(25deg); }
+			50% { transform: rotate(8deg); }
+		}
+
+		@keyframes talk {
+			from { transform: translateX(-50%) scaleY(1); }
+			to { transform: translateX(-50%) scaleY(0.6); }
+		}
+
+		@keyframes glow {
+			0%, 100% { filter: drop-shadow(0 0 0 rgba(251, 191, 36, 0)); }
+			50% { filter: drop-shadow(0 0 16px rgba(251, 191, 36, 0.35)); }
+		}
+
+		@keyframes sparkle {
+			0% { transform: scale(0.8); opacity: 0.4; }
+			50% { transform: scale(1.2); opacity: 1; }
+			100% { transform: scale(0.8); opacity: 0.4; }
+		}
+
+		@keyframes floaty {
+			0%, 100% { transform: translateY(0); }
+			50% { transform: translateY(14px); }
+		}
+
+		@media (max-width: 820px) {
+			.layout {
+				grid-template-columns: 1fr;
+			}
+
+			.stage {
+				min-height: 420px;
+			}
+		}
+
+		@media (max-width: 520px) {
+			.app {
+				padding: 18px;
+			}
+
+			.buttons {
+				grid-template-columns: 1fr;
+			}
+
+			.stats {
+				width: 100%;
+			}
+
+			.stat {
+				flex: 1 1 0;
+			}
+		}
+	</style>
+</head>
+<body>
+	<main class="app">
+		<div class="topbar">
+			<span class="badge">Talking Pet Game</span>
+			<div class="stats">
+				<div class="stat"><span>Coins</span><strong id="coins">0</strong></div>
+				<div class="stat"><span>Love</span><strong id="love">50</strong></div>
+				<div class="stat"><span>Energy</span><strong id="energyText">70</strong></div>
+			</div>
+		</div>
+
+		<h1>Talking <span>Tom Style</span> Game</h1>
+		<p class="intro">Tap the cat, type a message, and watch your pet repeat it with silly reactions. Keep the mood high by feeding, playing, and letting him rest.</p>
+
+		<div class="layout">
+			<section class="stage">
+				<div class="bubble" id="bubble">
+					<strong>Tom:</strong> Hey! Tap me or say something funny. I will repeat it with attitude.
+				</div>
+
+				<div class="pet-wrap">
+					<div class="pet" id="pet" role="button" aria-label="Talking pet">
+						<div class="ear left"></div>
+						<div class="ear right"></div>
+						<div class="eye left"></div>
+						<div class="eye right"></div>
+						<div class="nose"></div>
+						<div class="mouth"></div>
+						<div class="paw left"></div>
+						<div class="paw right"></div>
+						<div class="tail"></div>
+					</div>
+					<div id="sparkles"></div>
+				</div>
+			</section>
+
+			<aside class="panel">
+				<h2>Talk to Tom</h2>
+				<div class="field">
+					<label for="messageInput">Type a message for Tom to repeat</label>
+					<input id="messageInput" type="text" placeholder="Say hello, ask a question, or type something silly...">
+				</div>
+
+				<div class="buttons">
+					<button class="primary" id="talkBtn">Speak</button>
+					<button class="secondary" id="voiceBtn">Read aloud</button>
+					<button class="secondary" id="feedBtn">Feed</button>
+					<button class="secondary" id="playBtn">Play</button>
+					<button class="secondary" id="sleepBtn">Sleep</button>
+					<button class="secondary" id="cleanBtn">Clean</button>
+				</div>
+
+				<div class="meter">
+					<div>
+						<span style="color: var(--muted); font-size: 0.9rem;">Hunger</span>
+						<div class="bar"><div class="fill hunger" id="hungerBar"></div></div>
+					</div>
+					<div>
+						<span style="color: var(--muted); font-size: 0.9rem;">Happiness</span>
+						<div class="bar"><div class="fill happiness" id="happinessBar"></div></div>
+					</div>
+					<div>
+						<span style="color: var(--muted); font-size: 0.9rem;">Energy</span>
+						<div class="bar"><div class="fill energy" id="energyBar"></div></div>
+					</div>
+				</div>
+
+				<div class="actions">
+					<button class="secondary" id="resetBtn">New pet</button>
+					<button class="secondary" id="hintBtn">Funny response</button>
+				</div>
+
+				<div class="log" id="log">Tom is waiting for your command.</div>
+			</aside>
+		</div>
+	</main>
+
+	<script>
+		const pet = document.getElementById("pet");
+		const bubble = document.getElementById("bubble");
+		const messageInput = document.getElementById("messageInput");
+		const talkBtn = document.getElementById("talkBtn");
+		const voiceBtn = document.getElementById("voiceBtn");
+		const feedBtn = document.getElementById("feedBtn");
+		const playBtn = document.getElementById("playBtn");
+		const sleepBtn = document.getElementById("sleepBtn");
+		const cleanBtn = document.getElementById("cleanBtn");
+		const resetBtn = document.getElementById("resetBtn");
+		const hintBtn = document.getElementById("hintBtn");
+		const logEl = document.getElementById("log");
+		const coinsEl = document.getElementById("coins");
+		const loveEl = document.getElementById("love");
+		const energyTextEl = document.getElementById("energyText");
+		const hungerBar = document.getElementById("hungerBar");
+		const happinessBar = document.getElementById("happinessBar");
+		const energyBar = document.getElementById("energyBar");
+		const sparklesHost = document.getElementById("sparkles");
+
+		const funnyReplies = [
+			"Meow! That sounded important.",
+			"I heard that. I am judging you softly.",
+			"Your words are now part of my autobiography.",
+			"Interesting choice of sentence. Very brave.",
+			"I will repeat this later and pretend it was my idea."
+		];
+
+		const reactions = {
+			feed: ["Yum! I love snacks.", "Nom nom. That was excellent."],
+			play: ["Zoomies engaged!", "I am a tiny chaos engine now."],
+			sleep: ["Zzz... I needed that.", "Dreaming of tuna and world domination."],
+			clean: ["Sparkly again! I approve.", "Fresh and fabulous."],
+			tap: ["Hey! That was a nice tap.", "More pets please. I demand attention."]
+		};
+
+		let coins = 0;
+		let love = 50;
+		let hunger = 55;
+		let energy = 70;
+		let moodTimer = null;
+
+		function clamp(value) {
+			return Math.max(0, Math.min(100, value));
+		}
+
+		function updateUI() {
+			coinsEl.textContent = coins;
+			loveEl.textContent = love;
+			energyTextEl.textContent = energy;
+			hungerBar.style.width = `${hunger}%`;
+			happinessBar.style.width = `${love}%`;
+			energyBar.style.width = `${energy}%`;
+			pet.classList.toggle("sad", hunger > 80 || energy < 20 || love < 30);
+		}
+
+		function setBubble(text, speaker = "Tom") {
+			bubble.innerHTML = `<strong>${speaker}:</strong> ${text}`;
+		}
+
+		function setLog(text) {
+			logEl.textContent = text;
+		}
+
+		function sparkle() {
+			sparklesHost.innerHTML = "";
+			for (let i = 0; i < 12; i += 1) {
+				const dot = document.createElement("div");
+				dot.className = "sparkle";
+				dot.style.left = `${45 + Math.random() * 20}%`;
+				dot.style.top = `${35 + Math.random() * 24}%`;
+				dot.style.animationDelay = `${Math.random() * 0.4}s`;
+				sparklesHost.appendChild(dot);
+			}
+
+			setTimeout(() => {
+				sparklesHost.innerHTML = "";
+			}, 1200);
+		}
+
+		function speak(text) {
+			if (!window.speechSynthesis) {
+				setBubble(text);
+				return;
+			}
+
+			const utterance = new SpeechSynthesisUtterance(text);
+			utterance.rate = 1.02;
+			utterance.pitch = 1.25;
+			utterance.volume = 1;
+			speechSynthesis.cancel();
+			speechSynthesis.speak(utterance);
+		}
+
+		function animateTalk(text) {
+			pet.classList.add("talk");
+			setBubble(text);
+			speak(text);
+			setTimeout(() => pet.classList.remove("talk"), 700);
+		}
+
+		function reward(action, loveGain, coinGain, hungerDrop, energyDrop, text) {
+			love = clamp(love + loveGain);
+			coins += coinGain;
+			hunger = clamp(hunger + hungerDrop);
+			energy = clamp(energy + energyDrop);
+			setBubble(text);
+			setLog(action);
+			sparkle();
+			updateUI();
+		}
+
+		function randomReply() {
+			const reply = funnyReplies[Math.floor(Math.random() * funnyReplies.length)];
+			animateTalk(reply);
+			love = clamp(love + 2);
+			hunger = clamp(hunger + 2);
+			energy = clamp(energy - 1);
+			coins += 1;
+			setLog("Tom copied your style and added extra drama.");
+			updateUI();
+		}
+
+		function tapPet() {
+			const reply = reactions.tap[Math.floor(Math.random() * reactions.tap.length)];
+			animateTalk(reply);
+			love = clamp(love + 3);
+			energy = clamp(energy - 2);
+			coins += 1;
+			setLog("Tom likes being tapped, but only the respectful kind.");
+			updateUI();
+		}
+
+		function resetGame() {
+			coins = 0;
+			love = 50;
+			hunger = 55;
+			energy = 70;
+			messageInput.value = "";
+			pet.classList.remove("talk");
+			setBubble("Hey! Tap me or say something funny. I will repeat it with attitude.");
+			setLog("Tom is waiting for your command.");
+			updateUI();
+		}
+
+		talkBtn.addEventListener("click", () => {
+			const text = messageInput.value.trim();
+			if (!text) {
+				setLog("Type something first so Tom has words to steal.");
+				setBubble("I need text before I can repeat it.");
+				return;
+			}
+
+			const reply = `${text}. Wait, did you just say that out loud to a cat?`;
+			animateTalk(reply);
+			coins += 2;
+			love = clamp(love + 2);
+			hunger = clamp(hunger + 3);
+			energy = clamp(energy - 2);
+			setLog("Tom repeated your message with extra confidence.");
+			updateUI();
+			messageInput.value = "";
+		});
+
+		voiceBtn.addEventListener("click", () => {
+			const text = messageInput.value.trim() || "Meow meow! I am the most dramatic pet on the internet.";
+			animateTalk(text);
+			setLog("Tom used his serious voice. It was not that serious.");
+		});
+
+		feedBtn.addEventListener("click", () => {
+			reward("Tom got fed and became less dramatic.", 8, 2, -20, -2, reactions.feed[Math.floor(Math.random() * reactions.feed.length)]);
+		});
+
+		playBtn.addEventListener("click", () => {
+			reward("Tom played and used a lot of energy.", 10, 3, 6, -14, reactions.play[Math.floor(Math.random() * reactions.play.length)]);
+		});
+
+		sleepBtn.addEventListener("click", () => {
+			reward("Tom slept and recharged the chaos battery.", 2, 1, -8, 18, reactions.sleep[Math.floor(Math.random() * reactions.sleep.length)]);
+		});
+
+		cleanBtn.addEventListener("click", () => {
+			reward("Tom got cleaned and now sparkles emotionally.", 6, 2, 0, -1, reactions.clean[Math.floor(Math.random() * reactions.clean.length)]);
+		});
+
+		hintBtn.addEventListener("click", randomReply);
+		resetBtn.addEventListener("click", resetGame);
+		pet.addEventListener("click", tapPet);
+
+		messageInput.addEventListener("keydown", (event) => {
+			if (event.key === "Enter") {
+				talkBtn.click();
+			}
+		});
+
+		moodTimer = setInterval(() => {
+			hunger = clamp(hunger + 2);
+			love = clamp(love - 1);
+			energy = clamp(energy - 1);
+
+			if (hunger > 85) {
+				setBubble("I am getting hungry. Feed me before I become a tiny grump.");
+			} else if (energy < 20) {
+				setBubble("Tom is sleepy. Even famous cats need naps.");
+			} else if (love < 30) {
+				setBubble("I want attention. Pets, please.");
+			}
+
+			updateUI();
+		}, 12000);
+
+		updateUI();
+		setBubble("Hey! Tap me or say something funny. I will repeat it with attitude.");
+	</script>
+</body>
+</html>

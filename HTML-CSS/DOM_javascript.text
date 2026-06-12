@@ -1,0 +1,14 @@
+let pen=Document.getElementById("wish");
+console.log(pen);
+let mouse=Document.getElementClassName("wishes");
+console.log(mouse);
+let cable=Document.getElementTagName("div");
+console.log(cable);
+let book=Document.querySelector("fun");
+console.log(book);
+let mobile=Document.querySelecorAll("care");
+console.log(mobile);
+
+
+
+
