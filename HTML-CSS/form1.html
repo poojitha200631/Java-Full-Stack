@@ -4,8 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Responsive form</title>
-    
-</head>
+    </head>
 <body>
     <h1>Driving License</h1>
     <form id="details">
@@ -15,14 +14,22 @@
         <label>Email:</label>
         <input type="email" id="mail" required>
         <br><br>
+        <label>DOB:</label>
+        <input type="date" id="dob" required>
+        <br><br>
+        <label>Gender:</label>
+        <input type="radio" name="gender" value="Male" required> Male
+        <input type="radio" name="gender" value="Female"> Female
+        <input type="radio" name="gender" value="Other"> Other
+        <br><br>
         <label>Phone no:</label>
-        <input type="number" id="phone" required>
+        <input type="number" id="phone" required><br><br>
+        <label>Documents:</label>
+        <input type="checkbox" name="documents" value="Pollution Certificate"> Pollution Certificate
+        <input type="checkbox" name="documents" value="RC Book"> RC Book
         <br><br>
         <label>Age:</label>
         <input type="number" id="age" required>
-        <br><br>
-        <label>Gender:</label>
-        <input type="text" id="gender" required>
         <br><br>
         <label>Address:</label>
         <input type="text" id="address" required>
@@ -40,6 +47,6 @@
     <p id="p5"></p>
     <p id="p6"></p>
     <img id="dp" width="200px" >
-    <script src="Form.js" ></script>
+<script src="Form.js" ></script>
 </body>
 </html>
